@@ -62,8 +62,8 @@ def get_youtube_token(full_response=False):
 def get_zoom_token(full_response=False):
     api_key = os.environ.get('ZOOM_API_KEY','')
     api_secret = os.environ.get('ZOOM_API_SECRET','')
-    logging.info(f"YouTube service account: {svc_account[:10]}...")
-    logging.info(f"YouTube private key: {private_key[:10]}...")
+    logging.info(f"YouTube service account: {api_key[:10]}...")
+    logging.info(f"YouTube private key: {api_secret[:10]}...")
     myjwt = get_jwt(
         issuer=api_key,
         key=api_secret.encode('utf-8'),
