@@ -22,7 +22,7 @@ def get_youtube_token(full_response=False):
     logging.info('Attempting to get YouTube token')
     token_uri = 'https://oauth2.googleapis.com/token'
     svc_account = os.environ.get('GOOGLE_SERVICE_ACCOUNT','')
-    private_key = os.environ.get('GOOGLE_PRIVATE_KEY','').encode('utf-8')
+    private_key = os.environ.get('GOOGLE_PRIVATE_KEY','')
     scopes = [
         'https://www.googleapis.com/auth/youtube',
         'https://www.googleapis.com/auth/youtube.readonly',
@@ -30,11 +30,13 @@ def get_youtube_token(full_response=False):
         'https://www.googleapis.com/auth/yt-analytics.readonly',
         'https://www.googleapis.com/auth/yt-analytics-monetary.readonly',
     ]
+    logging.info(f"YouTube service account: {svc_account[:10]}...")
+    logging.info(f"YouTube private key: {private_key[:10]}...")
     myjwt = get_jwt(
         issuer=svc_account,
         scopes=scopes,
         uri=token_uri,
-        key=private_key
+        key=private_key.encode('utf-8')
     )
     headers = {'Content-Type': 'application/x-www-form-urlencoded'}
     r_token = requests.post(
@@ -58,9 +60,13 @@ def get_youtube_token(full_response=False):
             return ''
 
 def get_zoom_token(full_response=False):
+    api_key = os.environ.get('ZOOM_API_KEY','')
+    api_secret = os.environ.get('ZOOM_API_SECRET','')
+    logging.info(f"YouTube service account: {svc_account[:10]}...")
+    logging.info(f"YouTube private key: {private_key[:10]}...")
     myjwt = get_jwt(
-        issuer=os.environ.get('ZOOM_API_KEY',''),
-        key=os.environ.get('ZOOM_API_SECRET','').encode('utf-8'),
+        issuer=api_key,
+        key=api_secret.encode('utf-8'),
         algo='HS256'
     )
     return myjwt
